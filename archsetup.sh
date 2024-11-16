@@ -70,8 +70,8 @@ read -r reply
 
 if [ "$reply" != "y" ]; then
     echo -e "\n${blue}Choose one to install:${nocolor}"
-    echo -e -t "${green}a) paru${nocolor}"
-    echo -e -t "${green}b) yay${nocolor}"
+    echo -e  "\t${green}a) paru${nocolor}"
+    echo -e  "\t${green}b) yay${nocolor}"
     read -r assistant
     case $assistant in
         a) 
@@ -89,8 +89,8 @@ if [ "$reply" != "y" ]; then
     esac
 else
     echo -e "${blue}Which AUR assistant do you already have?${nocolor}"
-    echo -e -t "${green}a) paru${nocolor}"
-    echo -e -t "${green}b) yay${nocolor}"
+    echo -e "\t${green}a) paru${nocolor}"
+    echo -e  "\t${green}b) yay${nocolor}"
     read -r assistant
     case $assistant in
         a) 
@@ -109,6 +109,8 @@ fi
 # Confirmación de selección
 echo -e "${green}\n[!] You selected $aurasis as your AUR assistant.${nocolor}"
 
+npath=$(pwd)
+
 cat << "EOF"                             
 ╔═╗┌─┐┌─┐┌┬┐┬ ┬┌─┐┌┬┐┬┌─┐┌─┐
 ╠═╣├┤ └─┐ │ ├─┤├┤  │ ││  └─┐
@@ -117,5 +119,29 @@ EOF
 
 echo -e "\n${purple}[!]Installing sway!"
 
+# Instalando paquetes necesarios
 $aurasis -S sway waybar wofi mako light wl-clipboard pamixer swaylock swayidle
+
+#Instalando fuentes
+$aurasis -S ttf-nerd-fonts-symbols-mono
+
+# Instalación de Powerlevel10k
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
+echo 'source ~/powerlevel10k/powerlevel10k.zsh-theme' >>~/.zshrc
+chsh -s $(which zsh)
+$aurasis -S zsh-syntax-highlighting zsh-autosuggestions
+cp .p10k.zsh ~/
+echo .p10k.zsh > ~/.p10k.zsh 
+echo "source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> ~/.zshrc
+echo "source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh" >> ~/.zshrc
+
+# Root Powerlevel10k
+cd /root
+sudo git clone --depth=1 https://github.com/romkatv/powerlevel10k.git /root
+sudo echo "source ~/powerlevel10k/powerlevel10k.zsh-theme" >> ~/.zshrc
+chsh -s $(which zsh)
+sudo echo "source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> ~/.zshrc
+sudo echo "source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh" >> ~/.zshrc
+
+cd $npath
 
