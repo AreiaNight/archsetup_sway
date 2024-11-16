@@ -66,14 +66,18 @@ cat << "EOF"
                  ####**##            * ####%%%%%%%%%%%%%%%%%%%%                                     
                      ###****         +*#%%%%%%%%%%%%%%%%%%%%%%%%                                    
                #%%%%%   ***+**     --##%#%%%%%%%%%%%%%%%%%%%%%%%%                                   
-                          (         (                  )  (                )         
-                   (      )\ )      )\ )    (       ( /(  )\ )  (       ( /(   *   ) 
-                   )\    (()/( (   (()/(    )\      )\())(()/(  )\ )    )\())` )  /( 
-                ((((_)(   /(_)))\   /(_))((((_)(   ((_)\  /(_))(()/(   ((_)\  ( )(_))
-                 )\ _ )\ (_)) ((_) (_))   )\ _ )\   _((_)(_))   /(_))_  _((_)(_(_()) 
-                 (_)_\(_)| _ \| __||_ _|  (_)_\(_) | \| ||_ _| (_)) __|| || ||_   _| 
-                  / _ \  |   /| _|  | |    / _ \   | .` | | |    | (_ || __ |  | |   
-                 /_/ \_\ |_|_\|___||___|  /_/ \_\  |_|\_||___|    \___||_||_|  |_|                             
+
+
+
+      .o.                           o8o            ooooooooooooo oooo                  ooooo      ooo  o8o             oooo            .  
+     .888.                          `"'            8'   888   `8 `888                  `888b.     `8'  `"'             `888          .o8  
+    .8"888.     oooo d8b  .ooooo.  oooo   .oooo.        888       888 .oo.    .ooooo.   8 `88b.    8  oooo   .oooooooo  888 .oo.   .o888oo
+   .8' `888.    `888""8P d88' `88b `888  `P  )88b       888       888P"Y88b  d88' `88b  8   `88b.  8  `888  888' `88b   888P"Y88b    888  
+  .88ooo8888.    888     888ooo888  888   .oP"888       888       888   888  888ooo888  8     `88b.8   888  888   888   888   888    888  
+ .8'     `888.   888     888    .o  888  d8(  888       888       888   888  888    .o  8       `888   888  `88bod8P'   888   888    888 .
+o88o     o8888o d888b    `Y8bod8P' o888o `Y888""8o     o888o     o888o o888o `Y8bod8P' o8o        `8  o888o `8oooooo.  o888o o888o   "888"
+                                                                                                            d"     YD                     
+                                                                                                            "Y88888P'                                                
 EOF
 
 #Ctrl C función para salir
@@ -91,17 +95,52 @@ trap ctrl_c SIGINT
 echo -e "${red}\n\n[!] Updating system, please wait... This will take a while, so why not go for a snack or pet your pets?${nocolor}"
 sudo pacman -Syu --noconfirm
 
-echo -e "${blue}\n\n[!]Verifying yay.."
+# Selección de asistente AUR
+echo -e "${purple}\nDo you have any AUR assistant installed? (y/n): ${nocolor}"
+read -r reply
 
-# Instalación de yay
-if ! command -v yay > /dev/null 2>&1; then
-    echo -e "${green}Installing yay${nocolor}"
-    sudo pacman -S --noconfirm yay > /dev/null 2>&1
+if [ "$reply" != "y" ]; then
+    echo -e "\n${blue}Choose one to install:${nocolor}"
+    echo -e  "\t${green}a) paru${nocolor}"
+    echo -e  "\t${green}b) yay${nocolor}"
+    read -r assistant
+    case $assistant in
+        a) 
+            sudo pacman -S paru --noconfirm
+            aurasis="paru"
+            ;;
+        b) 
+            sudo pacman -S yay --noconfirm
+            aurasis="yay"
+            ;;
+        *) 
+            echo -e "${red}Not a valid option... Exiting.${nocolor}"
+            exit 1
+            ;;
+    esac
+else
+    echo -e "${blue}Which AUR assistant do you already have?${nocolor}"
+    echo -e "\t${green}a) paru${nocolor}"
+    echo -e  "\t${green}b) yay${nocolor}"
+    read -r assistant
+    case $assistant in
+        a) 
+            aurasis="paru"
+            ;;
+        b) 
+            aurasis="yay"
+            ;;
+        *) 
+            echo -e "${red}Not a valid option... Exiting.${nocolor}"
+            exit 1
+            ;;
+    esac
 fi
 
-cpath=$(pwd)
+# Confirmación de selección
+echo -e "${green}\n[!] You selected $aurasis as your AUR assistant.${nocolor}"
 
-echo -e "\n\n${purple}Starting the basic setup,${nocolor} ${red}let's go!${nocolor}"
+npath=$(pwd)
 
 cat << "EOF"                             
 ╔═╗┌─┐┌─┐┌┬┐┬ ┬┌─┐┌┬┐┬┌─┐┌─┐
@@ -121,7 +160,7 @@ $aurasis -S ttf-nerd-fonts-symbols-mono
 git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
 echo 'source ~/powerlevel10k/powerlevel10k.zsh-theme' >>~/.zshrc
 chsh -s $(which zsh)
-yay -S zsh-syntax-highlighting zsh-autosuggestions
+$aurasis -S zsh-syntax-highlighting zsh-autosuggestions
 cp .p10k.zsh ~/
 echo .p10k.zsh > ~/.p10k.zsh 
 echo "source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> ~/.zshrc
@@ -130,13 +169,10 @@ echo "source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
 # Root Powerlevel10k
 cd /root
 sudo git clone --depth=1 https://github.com/romkatv/powerlevel10k.git /root
-echo 'source ~/powerlevel10k/powerlevel10k.zsh-theme' >>~/.zshrc
+sudo echo "source ~/powerlevel10k/powerlevel10k.zsh-theme" >> ~/.zshrc
 chsh -s $(which zsh)
-yay -S zsh-syntax-highlighting zsh-autosuggestions
-cp .p10k.zsh ~/
-echo .p10k.zsh > ~/.p10k.zsh 
-echo "source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> ~/.zshrc
-echo "source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh" >> ~/.zshrc
+sudo echo "source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> ~/.zshrc
+sudo echo "source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh" >> ~/.zshrc
 
+cd $npath
 
-cd $cpath
