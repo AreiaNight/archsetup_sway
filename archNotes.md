@@ -2,7 +2,7 @@
 
 Change the /etc/pacman.conf
 Look for pareallel downloads, desmark
-Update repos
+Update repos pacman -Sy
 
 > If it you can't download, use for iwctl |
 > adapter list | 

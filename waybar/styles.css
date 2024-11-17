@@ -1,0 +1,17 @@
+/* General */
+* {
+  font-family: "JetBrains Mono", sans-serif;
+  font-size: 12px;
+  background: #282c34;
+  color: #abb2bf;
+}
+
+/* Barra completa */
+#bar {
+  border-bottom: 2px solid #61afef;
+}
+
+/* Módulo del reloj */
+#clock {
+  font-weight: bold;
+}

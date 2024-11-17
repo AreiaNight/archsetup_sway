@@ -1,0 +1,18 @@
+{
+  "layer": "top",
+  "position": "top",
+  "modules-left": ["workspaces", "mode"],
+  "modules-center": ["clock"],
+  "modules-right": ["pulseaudio", "network", "cpu", "memory", "temperature"],
+  "workspaces": {
+    "disable-scroll": true
+  },
+  "clock": {
+    "format": "%a %d %b %H:%M"
+  },
+  "temperature": {
+    "format": "{temperature}°C",
+    "interval": 5,
+    "hwmon-path": "/sys/class/thermal/thermal_zone0/temp"
+  }
+}

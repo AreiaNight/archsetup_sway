@@ -112,10 +112,10 @@ EOF
 echo -e "\n${purple}[!]Installing sway!"
 
 # Instalando paquetes necesarios
-$aurasis -S sway waybar wofi mako light wl-clipboard pamixer swaylock swayidle
+yay -S sway waybar rofi swaylock swayidle feh mako kitty zsh
 
 #Instalando fuentes
-$aurasis -S ttf-nerd-fonts-symbols-mono
+yay -S ttf-nerd-fonts-symbols-mono
 
 # Instalación de Powerlevel10k
 git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
@@ -138,5 +138,6 @@ echo .p10k.zsh > ~/.p10k.zsh
 echo "source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> ~/.zshrc
 echo "source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh" >> ~/.zshrc
 
-
 cd $cpath
+
+## Copia de las configuraciones
