@@ -96,8 +96,19 @@ echo -e "${blue}\n\n[!]Verifying yay.."
 # Instalación de yay
 if ! command -v yay > /dev/null 2>&1; then
     echo -e "${green}Installing yay${nocolor}"
-    sudo pacman -S --noconfirm yay > /dev/null 2>&1
+    # Instalacion de yay
+    echo -e "${green}[!] Installing yay${nocolor}"
+    sudo pacman -S --needed git base-devel && git clone https://aur.archlinux.org/yay.git && cd yay && makepkg -si 
+    yay -Y --gendb
 fi
+
+# Configurando la pantaia 
+yay -S xorg-xrandr --noconfirm
+xrandr --output Virtual1 --mode 1920x1080
+
+## Descomentar si se necesita 
+#yay -S open-vm-tools
+#vmware-user
 
 cpath=$(pwd)
 
@@ -141,3 +152,8 @@ echo "source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
 cd $cpath
 
 ## Copia de las configuraciones
+
+cd ~/.config
+cp $cpath/sway .
+cp $cpath/kitty .
+
