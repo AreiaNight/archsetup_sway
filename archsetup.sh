@@ -154,6 +154,6 @@ cd $cpath
 ## Copia de las configuraciones
 
 cd ~/.config
-cp $cpath/sway .
-cp $cpath/kitty .
+cp -r $cpath/sway .
+cp -r $cpath/kitty .
 
