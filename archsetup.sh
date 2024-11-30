@@ -120,10 +120,10 @@ cat << "EOF"
 ╩ ╩└─┘└─┘ ┴ ┴ ┴└─┘ ┴ ┴└─┘└─┘
 EOF
 
-echo -e "\n${purple}[!]Installing sway!"
+echo -e "\n${purple}[!]Installing hyprland & Sway!"
 
 # Instalando paquetes necesarios
-yay -S sway waybar rofi swaylock swayidle feh mako kitty zsh
+yay -S sway waybar rofi swaylock swayidle feh mako kitty zsh hyprland-git
 
 #Instalando fuentes
 yay -S ttf-nerd-fonts-symbols-mono
@@ -156,4 +156,6 @@ cd $cpath
 cd ~/.config
 cp -r $cpath/sway .
 cp -r $cpath/kitty .
-
+cd /usr/share/font
+cp $cpath/fonts/* .
+cd $cpath
